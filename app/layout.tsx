@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Script from "next/script";
+import { WarningDialog } from "@/components/ui/alert-dialog";
 
 // Optimiser le chargement de la police en préchargeant uniquement les poids nécessaires
 const inter = Inter({
@@ -115,6 +116,7 @@ export default function RootLayout({
         `}</Script>
       </head>
       <body className="antialiased">
+        <WarningDialog />
         <Navbar />
         {children}
         <Footer />

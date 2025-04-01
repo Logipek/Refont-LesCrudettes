@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -125,6 +127,70 @@ const AlertDialogCancel = React.forwardRef<
   />
 ));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
+
+export function WarningDialog() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const hasAcceptedWarning = localStorage.getItem("hasAcceptedWarning");
+    if (!hasAcceptedWarning) {
+      setOpen(true);
+    }
+  }, []);
+
+  const handleConfirm = () => {
+    localStorage.setItem("hasAcceptedWarning", "true");
+    setOpen(false);
+  };
+
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogContent className="bg-white rounded-lg shadow-lg">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-xl font-bold text-red-600">
+            ⚠️ Avertissement Important
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-gray-700 space-y-4">
+            <p>
+              Ce site web est une reproduction à des fins de démonstration et
+              d&apos;amélioration. Il ne s&apos;agit pas du site officiel de la
+              marque.
+            </p>
+            <p>
+              Cette version a été créée pour :
+            </p>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Démontrer des améliorations potentielles</li>
+              <li>Présenter mes compétences techniques</li>
+              <li>Respecter la propriété intellectuelle (aucun logo ou photo de la marque n&apos;est utilisé)</li>
+            </ul>
+            <p className="font-semibold">
+              En continuant, vous reconnaissez avoir pris connaissance de ces informations.
+            </p>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="flex gap-4">
+          <AlertDialogCancel
+            onClick={handleGoBack}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800"
+          >
+            Retour
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleConfirm}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            Je confirme
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
 
 export {
   AlertDialog,
